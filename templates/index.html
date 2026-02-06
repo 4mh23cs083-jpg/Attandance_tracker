@@ -1,10 +1,63 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Attendance Tracker - Smart Attendance Management System</title>
+    <title>Attendance Pro - Enterprise Management</title>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600;800&display=swap" rel="stylesheet">
     <style>
+        :root {
+            --primary: #8b5cf6;
+            --primary-dark: #6d28d9;
+            --secondary: #ec4899;
+            --accent: #10b981;
+            --dark: #0f172a;
+            --glass: rgba(255, 255, 255, 0.08);
+            --glass-border: rgba(255, 255, 255, 0.12);
+            --card-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
+        }
+
+        @keyframes blob {
+            0% {
+                transform: translate(0, 0) scale(1);
+            }
+
+            33% {
+                transform: translate(30px, -50px) scale(1.1);
+            }
+
+            66% {
+                transform: translate(-20px, 20px) scale(0.9);
+            }
+
+            100% {
+                transform: translate(0, 0) scale(1);
+            }
+        }
+
+        @keyframes shimmer {
+            0% {
+                background-position: -200% 0;
+            }
+
+            100% {
+                background-position: 200% 0;
+            }
+        }
+
+        @keyframes countUp {
+            from {
+                opacity: 0;
+                transform: translateY(10px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
         * {
             margin: 0;
             padding: 0;
@@ -12,25 +65,66 @@
         }
 
         body {
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            line-height: 1.6;
-            color: #333;
+            font-family: 'Outfit', sans-serif;
+            background-color: var(--dark);
+            color: white;
+            min-height: 100vh;
+            overflow-x: hidden;
+            display: flex;
+            flex-direction: column;
+        }
+
+        /* Background Visuals */
+        .bg-gradient {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            z-index: -1;
+            background: radial-gradient(circle at top right, #1e1b4b, #0f172a);
+            overflow: hidden;
+        }
+
+        .blob {
+            position: absolute;
+            width: 500px;
+            height: 500px;
+            background: var(--primary);
+            filter: blur(120px);
+            opacity: 0.15;
+            border-radius: 50%;
+            animation: blob 15s infinite alternate;
+        }
+
+        .blob-2 {
+            top: 40%;
+            right: -100px;
+            background: var(--secondary);
+            animation-delay: -5s;
+        }
+
+        .blob-3 {
+            bottom: -100px;
+            left: 20%;
+            background: var(--accent);
+            animation-delay: -10s;
         }
 
         header {
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            color: white;
-            padding: 1rem 0;
+            padding: 1.5rem 0;
+            background: rgba(15, 23, 42, 0.8);
+            backdrop-filter: blur(12px);
+            border-bottom: 1px solid var(--glass-border);
             position: sticky;
             top: 0;
             z-index: 100;
-            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
         }
 
         .container {
-            max-width: 1200px;
+            max-width: 1400px;
             margin: 0 auto;
-            padding: 0 20px;
+            padding: 0 40px;
         }
 
         nav {
@@ -41,329 +135,591 @@
 
         .logo {
             font-size: 1.8rem;
-            font-weight: bold;
+            font-weight: 800;
+            background: linear-gradient(to right, #fff, #94a3b8);
+            -webkit-background-clip: text;
+            background-clip: text;
+            -webkit-text-fill-color: transparent;
+            letter-spacing: -1px;
         }
 
-        .nav-links {
+        /* Landing Layout */
+        #landing-view {
+            flex: 1;
             display: flex;
-            list-style: none;
-            gap: 2rem;
-        }
-
-        .nav-links a {
-            color: white;
-            text-decoration: none;
-            transition: opacity 0.3s;
-        }
-
-        .nav-links a:hover {
-            opacity: 0.8;
-        }
-
-        .hero {
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            color: white;
-            padding: 100px 0;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
             text-align: center;
+            padding: 100px 0;
+        }
+
+        .hero-badge {
+            background: var(--glass);
+            padding: 8px 16px;
+            border-radius: 100px;
+            font-size: 0.85rem;
+            font-weight: 600;
+            border: 1px solid var(--glass-border);
+            margin-bottom: 2rem;
+            display: inline-block;
+            color: #94a3b8;
         }
 
         .hero h1 {
-            font-size: 3.5rem;
-            margin-bottom: 1rem;
-            font-weight: 700;
+            font-size: 5rem;
+            line-height: 1;
+            font-weight: 800;
+            margin-bottom: 1.5rem;
+            letter-spacing: -3px;
+        }
+
+        .hero h1 span {
+            background: linear-gradient(to right, var(--primary), var(--secondary));
+            -webkit-background-clip: text;
+            background-clip: text;
+            -webkit-text-fill-color: transparent;
         }
 
         .hero p {
-            font-size: 1.3rem;
-            margin-bottom: 2rem;
-            opacity: 0.95;
+            font-size: 1.25rem;
+            color: #94a3b8;
+            max-width: 600px;
+            margin-bottom: 3rem;
         }
 
-        .cta-button {
-            display: inline-block;
-            padding: 12px 30px;
+        .btn-premium {
             background: white;
-            color: #667eea;
-            text-decoration: none;
-            border-radius: 50px;
-            font-weight: 600;
-            transition: transform 0.3s, box-shadow 0.3s;
+            color: var(--dark);
+            padding: 18px 45px;
+            border-radius: 16px;
+            font-weight: 700;
+            font-size: 1.1rem;
             border: none;
             cursor: pointer;
-            font-size: 1rem;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            box-shadow: 0 10px 30px rgba(255, 255, 255, 0.1);
+            display: inline-flex;
+            align-items: center;
+            gap: 12px;
         }
 
-        .cta-button:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2);
+        .btn-premium:hover {
+            transform: scale(1.05) translateY(-5px);
+            box-shadow: 0 20px 40px rgba(139, 92, 246, 0.3);
         }
 
-        .features {
-            padding: 80px 0;
-            background: #f8f9fa;
+        /* Dashboard Layout */
+        #dashboard {
+            display: none;
+            padding: 40px 0;
+            animation: countUp 0.6s ease-out;
         }
 
-        .section-title {
-            text-align: center;
-            font-size: 2.5rem;
-            margin-bottom: 3rem;
-            color: #333;
-        }
-
-        .features-grid {
+        .dashboard-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-            gap: 2rem;
+            grid-template-columns: 320px 1fr;
+            gap: 40px;
         }
 
-        .feature-card {
-            background: white;
-            padding: 2rem;
+        .sidebar {
+            display: flex;
+            flex-direction: column;
+            gap: 30px;
+        }
+
+        .glass-box {
+            background: var(--glass);
+            backdrop-filter: blur(20px);
+            border: 1px solid var(--glass-border);
+            border-radius: 24px;
+            padding: 30px;
+        }
+
+        .stat-item {
+            margin-bottom: 20px;
+        }
+
+        .stat-label {
+            font-size: 0.85rem;
+            color: #94a3b8;
+            margin-bottom: 5px;
+            display: block;
+        }
+
+        .stat-value {
+            font-size: 2rem;
+            font-weight: 700;
+        }
+
+        .progress-bar-container {
+            width: 100%;
+            height: 8px;
+            background: rgba(255, 255, 255, 0.05);
             border-radius: 10px;
-            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
-            text-align: center;
-            transition: transform 0.3s;
+            overflow: hidden;
+            margin-top: 10px;
         }
 
-        .feature-card:hover {
-            transform: translateY(-10px);
+        .progress-bar {
+            height: 100%;
+            background: linear-gradient(to right, var(--primary), var(--secondary));
+            width: 0%;
+            transition: width 1s ease-in-out;
         }
 
-        .feature-icon {
-            font-size: 3rem;
-            margin-bottom: 1rem;
+        /* Search & Filters */
+        .controls {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 30px;
         }
 
-        .feature-card h3 {
-            font-size: 1.5rem;
-            margin-bottom: 0.5rem;
-            color: #667eea;
-        }
-
-        .feature-card p {
-            color: #666;
-            line-height: 1.8;
-        }
-
-        .how-it-works {
-            padding: 80px 0;
-        }
-
-        .steps-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-            gap: 2rem;
-            margin-top: 3rem;
-        }
-
-        .step {
+        .search-container {
             position: relative;
-            padding: 2rem;
-            background: white;
-            border-left: 4px solid #667eea;
-            border-radius: 5px;
-            box-shadow: 0 3px 10px rgba(0, 0, 0, 0.08);
+            width: 400px;
         }
 
-        .step-number {
-            position: absolute;
-            top: -15px;
-            left: 20px;
-            width: 40px;
-            height: 40px;
-            background: #667eea;
+        .search-input {
+            width: 100%;
+            background: var(--glass);
+            border: 1px solid var(--glass-border);
+            border-radius: 16px;
+            padding: 15px 20px;
             color: white;
-            border-radius: 50%;
+            font-family: inherit;
+            font-size: 1rem;
+            outline: none;
+            transition: all 0.3s;
+        }
+
+        .search-input:focus {
+            border-color: var(--primary);
+            box-shadow: 0 0 0 4px rgba(139, 92, 246, 0.1);
+        }
+
+        /* Student Cards */
+        .student-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 25px;
+        }
+
+        .student-card {
+            background: var(--glass);
+            backdrop-filter: blur(20px);
+            border: 1px solid var(--glass-border);
+            border-radius: 24px;
+            padding: 30px;
+            transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .student-card:hover {
+            transform: translateY(-10px);
+            border-color: rgba(255, 255, 255, 0.3);
+            background: rgba(255, 255, 255, 0.12);
+        }
+
+        .student-card::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.05), transparent);
+            transition: 0.5s;
+        }
+
+        .student-card:hover::after {
+            left: 100%;
+        }
+
+        .card-header {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            margin-bottom: 20px;
+        }
+
+        .avatar {
+            width: 56px;
+            height: 56px;
+            border-radius: 18px;
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
             display: flex;
             align-items: center;
             justify-content: center;
-            font-weight: bold;
-            font-size: 1.2rem;
+            font-weight: 800;
+            font-size: 1.25rem;
+            box-shadow: 0 10px 20px rgba(139, 92, 246, 0.2);
         }
 
-        .step h3 {
-            margin-top: 1rem;
-            margin-bottom: 0.5rem;
-            color: #333;
+        .student-info h3 {
+            font-size: 1.15rem;
+            font-weight: 600;
         }
 
-        .step p {
-            color: #666;
+        .status-pill {
+            display: inline-block;
+            padding: 6px 14px;
+            border-radius: 100px;
+            font-size: 0.75rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
         }
 
-        .cta-section {
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        .status-present {
+            background: rgba(16, 185, 129, 0.1);
+            color: var(--accent);
+            border: 1px solid rgba(16, 185, 129, 0.2);
+        }
+
+        .status-absent {
+            background: rgba(239, 68, 68, 0.1);
+            color: #ef4444;
+            border: 1px solid rgba(239, 68, 68, 0.2);
+        }
+
+        .status-late {
+            background: rgba(245, 158, 11, 0.1);
+            color: #f59e0b;
+            border: 1px solid rgba(245, 158, 11, 0.2);
+        }
+
+        .status-not-marked {
+            background: rgba(148, 163, 184, 0.1);
+            color: #94a3b8;
+            border: 1px solid rgba(148, 163, 184, 0.2);
+        }
+
+        .action-group {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 10px;
+            margin-top: 25px;
+        }
+
+        .btn-action {
+            padding: 12px;
+            border-radius: 12px;
+            border: 1px solid var(--glass-border);
+            background: rgba(255, 255, 255, 0.03);
             color: white;
-            padding: 80px 0;
-            text-align: center;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.2s;
+            font-size: 0.85rem;
         }
 
-        .cta-section h2 {
-            font-size: 2.5rem;
-            margin-bottom: 1.5rem;
+        .btn-action:hover {
+            background: rgba(255, 255, 255, 0.08);
+            transform: translateY(-2px);
         }
 
-        .cta-section p {
-            font-size: 1.2rem;
-            margin-bottom: 2rem;
+        .btn-action.active-p {
+            background: var(--accent);
+            border-color: var(--accent);
+            color: var(--dark);
+        }
+
+        .btn-action.active-a {
+            background: #ef4444;
+            border-color: #ef4444;
+        }
+
+        .btn-action.active-l {
+            background: #f59e0b;
+            border-color: #f59e0b;
+            color: var(--dark);
+        }
+
+        /* Sidebar Activity */
+        .activity-list {
+            list-style: none;
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+        }
+
+        .activity-item {
+            padding: 15px;
+            background: rgba(255, 255, 255, 0.03);
+            border-radius: 16px;
+            font-size: 0.9rem;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            animation: fadeIn 0.5s ease-out;
+        }
+
+        .activity-icon {
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
         }
 
         footer {
-            background: #2c3e50;
-            color: white;
+            padding: 40px 0;
             text-align: center;
-            padding: 2rem 0;
+            color: #64748b;
+            font-size: 0.9rem;
+            border-top: 1px solid var(--glass-border);
+            margin-top: auto;
         }
 
-        footer p {
-            margin-bottom: 0.5rem;
-        }
-
-        .footer-links {
-            margin-top: 1rem;
-        }
-
-        .footer-links a {
-            color: white;
-            text-decoration: none;
-            margin: 0 1rem;
-            transition: opacity 0.3s;
-        }
-
-        .footer-links a:hover {
-            opacity: 0.7;
-        }
-
-        @media (max-width: 768px) {
-            .hero h1 {
-                font-size: 2rem;
-            }
-
-            .nav-links {
-                gap: 1rem;
-            }
-
-            .section-title {
-                font-size: 2rem;
-            }
-
-            .features-grid {
+        @media (max-width: 1024px) {
+            .dashboard-grid {
                 grid-template-columns: 1fr;
+            }
+
+            .hero h1 {
+                font-size: 3.5rem;
             }
         }
     </style>
 </head>
+
 <body>
-    <!-- Navigation Header -->
+    <div class="bg-gradient">
+        <div class="blob"></div>
+        <div class="blob blob-2"></div>
+        <div class="blob blob-3"></div>
+    </div>
+
     <header>
-        <div class="container">
+        <div class="container text-center">
             <nav>
-                <div class="logo">📊 Attendance Tracker</div>
-                <ul class="nav-links">
-                    <li><a href="#features">Features</a></li>
-                    <li><a href="#how-it-works">How It Works</a></li>
-                    <li><a href="#contact">Contact</a></li>
-                </ul>
+                <div class="logo">ATTENDANCE PRO</div>
+                <button class="btn-premium" style="padding: 10px 25px; font-size: 0.9rem;"
+                    onclick="location.reload()">Reset System</button>
             </nav>
         </div>
     </header>
 
-    <!-- Hero Section -->
-    <section class="hero">
-        <div class="container">
-            <h1>Smart Attendance Management</h1>
-            <p>Track attendance effortlessly with our intelligent system</p>
-            <button class="cta-button" onclick="alert('Get started feature coming soon!')">Get Started</button>
+    <!-- Landing Page -->
+    <main id="landing-view" class="container">
+        <div class="hero">
+            <span class="hero-badge">Aesthetically Superior Tracking</span>
+            <h1>The New Standard in<br><span>Attendance Intelligence.</span></h1>
+            <p>Elevate your organization with enterprise-grade tracking, deep analytics, and an interface that feels
+                like the future.</p>
+            <button class="btn-premium" onclick="startSystem()">Launch Dashboard <svg width="20" height="20"
+                    viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"
+                    stroke-linejoin="round">
+                    <line x1="5" y1="12" x2="19" y2="12"></line>
+                    <polyline points="12 5 19 12 12 19"></polyline>
+                </svg></button>
         </div>
-    </section>
+    </main>
 
-    <!-- Features Section -->
-    <section class="features" id="features">
-        <div class="container">
-            <h2 class="section-title">Key Features</h2>
-            <div class="features-grid">
-                <div class="feature-card">
-                    <div class="feature-icon">⏱️</div>
-                    <h3>Real-time Tracking</h3>
-                    <p>Monitor attendance in real-time with instant updates and notifications</p>
+    <!-- Dashboard -->
+    <div id="dashboard" class="container">
+        <div class="dashboard-grid">
+            <aside class="sidebar">
+                <div class="glass-box">
+                    <h3 style="margin-bottom: 25px;">Intelligence Summary</h3>
+
+                    <div class="stat-item">
+                        <span class="stat-label">System Health</span>
+                        <div class="stat-value" id="health-value">99.8%</div>
+                    </div>
+
+                    <div class="stat-item">
+                        <span class="stat-label">Daily Attendance Rate</span>
+                        <div class="stat-value" id="rate-value">0%</div>
+                        <div class="progress-bar-container">
+                            <div class="progress-bar" id="rate-bar"></div>
+                        </div>
+                    </div>
+
+                    <div class="stat-item"
+                        style="margin-top: 30px; display: grid; grid-template-columns: 1fr 1fr; gap: 15px;">
+                        <div>
+                            <span class="stat-label">Present</span>
+                            <div class="stat-value" id="count-p" style="font-size: 1.5rem; color: var(--accent);">0
+                            </div>
+                        </div>
+                        <div>
+                            <span class="stat-label">Absent</span>
+                            <div class="stat-value" id="count-a" style="font-size: 1.5rem; color: #ef4444;">0</div>
+                        </div>
+                    </div>
                 </div>
-                <div class="feature-card">
-                    <div class="feature-icon">📈</div>
-                    <h3>Analytics & Reports</h3>
-                    <p>Generate detailed reports and analytics to identify patterns</p>
+
+                <div class="glass-box">
+                    <h3 style="margin-bottom: 20px; font-size: 1.1rem;">Live Stream</h3>
+                    <ul class="activity-list" id="activity-stream">
+                        <li class="activity-item" style="color: #64748b;">Waiting for data...</li>
+                    </ul>
                 </div>
-                <div class="feature-card">
-                    <div class="feature-icon">🔐</div>
-                    <h3>Secure & Reliable</h3>
-                    <p>Bank-level security ensures your data is always protected</p>
+            </aside>
+
+            <section class="main-content">
+                <div class="controls">
+                    <div class="search-container">
+                        <input type="text" class="search-input" placeholder="Search students by name or email..."
+                            id="search-input">
+                    </div>
+                    <div style="color: #64748b; font-weight: 600;" id="current-date"></div>
                 </div>
-                <div class="feature-card">
-                    <div class="feature-icon">📱</div>
-                    <h3>Mobile Friendly</h3>
-                    <p>Access attendance records from any device, anywhere</p>
+
+                <div id="student-grid" class="student-grid">
+                    <!-- Cards Injected Here -->
                 </div>
-                <div class="feature-card">
-                    <div class="feature-icon">⚙️</div>
-                    <h3>Easy Integration</h3>
-                    <p>Seamlessly integrate with your existing systems</p>
-                </div>
-                <div class="feature-card">
-                    <div class="feature-icon">👥</div>
-                    <h3>User Management</h3>
-                    <p>Manage multiple users and roles with granular permissions</p>
-                </div>
-            </div>
+            </section>
         </div>
-    </section>
+    </div>
 
-    <!-- How It Works Section -->
-    <section class="how-it-works" id="how-it-works">
-        <div class="container">
-            <h2 class="section-title">How It Works</h2>
-            <div class="steps-grid">
-                <div class="step">
-                    <div class="step-number">1</div>
-                    <h3>Sign Up</h3>
-                    <p>Create your account in seconds and set up your organization</p>
-                </div>
-                <div class="step">
-                    <div class="step-number">2</div>
-                    <h3>Add Users</h3>
-                    <p>Invite team members and assign roles and permissions</p>
-                </div>
-                <div class="step">
-                    <div class="step-number">3</div>
-                    <h3>Track Attendance</h3>
-                    <p>Mark attendance and monitor in real-time with automatic logging</p>
-                </div>
-                <div class="step">
-                    <div class="step-number">4</div>
-                    <h3>Analyze & Report</h3>
-                    <p>View detailed reports, trends, and insights instantly</p>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <!-- Call to Action Section -->
-    <section class="cta-section" id="contact">
-        <div class="container">
-            <h2>Ready to streamline your attendance?</h2>
-            <p>Join hundreds of organizations using Attendance Tracker</p>
-            <button class="cta-button" onclick="alert('Contact us feature coming soon!')">Contact Us Today</button>
-        </div>
-    </section>
-
-    <!-- Footer -->
     <footer>
         <div class="container">
-            <p>&copy; 2026 Attendance Tracker. All rights reserved.</p>
-            <div class="footer-links">
-                <a href="#privacy">Privacy Policy</a>
-                <a href="#terms">Terms of Service</a>
-                <a href="#support">Support</a>
-            </div>
+            <p>&copy; 2026 Attendance Pro Enterprise. Designed for Visual Excellence.</p>
         </div>
     </footer>
+
+    <script>
+        let studentsData = [];
+        let activityStream = [];
+
+        async function startSystem() {
+            const landing = document.getElementById('landing-view');
+            const dashboard = document.getElementById('dashboard');
+
+            landing.style.transition = 'all 0.8s cubic-bezier(0.16, 1, 0.3, 1)';
+            landing.style.opacity = '0';
+            landing.style.transform = 'translateY(-50px) scale(0.95)';
+
+            setTimeout(async () => {
+                landing.style.display = 'none';
+                dashboard.style.display = 'block';
+                await loadDashboard();
+            }, 600);
+        }
+
+        async function loadDashboard() {
+            document.getElementById('current-date').textContent = new Date().toLocaleDateString('en-US', {
+                weekday: 'long', year: 'numeric', month: 'long', day: 'numeric'
+            });
+
+            await fetchAllData();
+            setupSearch();
+        }
+
+        async function fetchAllData() {
+            try {
+                const [usersRes, attRes, summaryRes] = await Promise.all([
+                    fetch('/api/users'),
+                    fetch(`/api/attendance?date=${new Date().toISOString().split('T')[0]}`),
+                    fetch('/api/analytics/summary')
+                ]);
+
+                const users = await usersRes.json();
+                const attendance = await attRes.json();
+                const summary = await summaryRes.json();
+
+                studentsData = users.filter(u => u.role === 'student' || u.role === 'user');
+
+                updateStats(summary);
+                renderStudents(studentsData, attendance);
+            } catch (err) {
+                console.error("Dashboard Sync Error:", err);
+            }
+        }
+
+        function renderStudents(students, attendance) {
+            const grid = document.getElementById('student-grid');
+            grid.innerHTML = '';
+
+            students.forEach((student, i) => {
+                const record = attendance.find(a => a.user_id === student.id);
+                const status = record ? record.status : 'not-marked';
+
+                const card = document.createElement('div');
+                card.className = 'student-card';
+                card.style.animation = `countUp 0.6s ease-out forwards ${i * 0.05}s`;
+                card.style.opacity = '0';
+
+                card.innerHTML = `
+                    <div class="card-header">
+                        <div class="avatar">${student.username[0]}</div>
+                        <div class="student-info">
+                            <h3>${student.username}</h3>
+                            <div class="status-pill status-${status}">${status}</div>
+                        </div>
+                    </div>
+                    <div class="action-group">
+                        <button onclick="markStatus(${student.id}, 'present')" class="btn-action ${status === 'present' ? 'active-p' : ''}">Present</button>
+                        <button onclick="markStatus(${student.id}, 'absent')" class="btn-action ${status === 'absent' ? 'active-a' : ''}">Absent</button>
+                        <button onclick="markStatus(${student.id}, 'late')" class="btn-action ${status === 'late' ? 'active-l' : ''}">Late</button>
+                    </div>
+                `;
+                grid.appendChild(card);
+            });
+        }
+
+        async function markStatus(userId, status) {
+            const student = studentsData.find(s => s.id === userId);
+            try {
+                const response = await fetch('/api/attendance', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ user_id: userId, status: status })
+                });
+
+                if (response.ok) {
+                    addActivity(student.username, status);
+                    await fetchAllData();
+                }
+            } catch (err) {
+                console.error("Update failed");
+            }
+        }
+
+        function updateStats(data) {
+            document.getElementById('count-p').textContent = data.total_present;
+            document.getElementById('count-a').textContent = data.total_absent;
+            document.getElementById('rate-value').textContent = data.attendance_rate + '%';
+            document.getElementById('rate-bar').style.width = data.attendance_rate + '%';
+        }
+
+        function addActivity(name, status) {
+            const stream = document.getElementById('activity-stream');
+            if (activityStream.length === 0) stream.innerHTML = '';
+
+            const color = status === 'present' ? 'var(--accent)' : status === 'absent' ? '#ef4444' : '#f59e0b';
+            const log = `<strong>${name}</strong> marked as <span style="color:${color}">${status}</span>`;
+
+            activityStream.unshift({ log, color });
+            if (activityStream.length > 5) activityStream.pop();
+
+            stream.innerHTML = activityStream.map(item => `
+                <li class="activity-item">
+                    <div class="activity-icon" style="background:${item.color}"></div>
+                    <span>${item.log}</span>
+                </li>
+            `).join('');
+        }
+
+        function setupSearch() {
+            const input = document.getElementById('search-input');
+            input.addEventListener('input', (e) => {
+                const term = e.target.value.toLowerCase();
+                const filtered = studentsData.filter(s =>
+                    s.username.toLowerCase().includes(term) ||
+                    s.email.toLowerCase().includes(term)
+                );
+
+                // For simplified search rendering, we fetch attendance again or pass it
+                fetch(`/api/attendance?date=${new Date().toISOString().split('T')[0]}`)
+                    .then(r => r.json())
+                    .then(att => renderStudents(filtered, att));
+            });
+        }
+    </script>
 </body>
+
 </html>
